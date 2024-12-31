@@ -1,0 +1,40 @@
+import requests
+
+def get_data_leagues(link: str, league_id, date, season):
+    headers = {
+        "x-apisports-key": "f7919498dc3463f309110e3c64e84ed8"
+    }
+
+    params = {
+        "league": league_id,
+        "date": date,
+        "season": season
+    }
+
+    response = requests.get(link, headers=headers, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+        return data['response']
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        return None
+
+# قم بإدخال المعلومات الصحيحة
+league_id = 39          # الدوري الإنجليزي الممتاز
+date = "2024-12-31"     # تأكد من أن التاريخ ضمن النطاق المسموح به
+season = 2024           # الموسم المطلوب
+link = "https://v3.football.api-sports.io/fixtures"
+
+
+# استدعاء الدالة
+matches = get_data_leagues(link, league_id, date, season)
+
+# طباعة النتائج
+if matches:
+    print("Matches found:")
+    for match in matches:
+        print(match)
+else:
+    print("No matches found for the given date.")
